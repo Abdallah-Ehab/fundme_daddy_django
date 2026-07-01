@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Registration Complete{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+        <h2>Registration Complete</h2>
+        <p>Please check your email (or terminal) for an activation link to activate your account.</p>
+        <a href="{% url 'accounts:login' %}" class="btn btn-primary">Go to Login</a>
+    </div>
+</div>
+{% endblock %}

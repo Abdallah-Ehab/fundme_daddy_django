@@ -17,6 +17,7 @@ venv/
 local_settings.py
 db.sqlite3
 media/project_images/*
+!media/project_images/.gitkeep
 
 # IDE
 .vscode/

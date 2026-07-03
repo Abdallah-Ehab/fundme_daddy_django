@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}FundMeDaddy - Crowdfunding for Everyone{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Bring Your Ideas to Life</h1>
+        <p>Join a community of creators and backers bringing creative projects to life. Start your campaign or support someone today.</p>
+        <a href="{% url 'projects:list' %}" class="btn btn-hero">Explore Projects</a>
+    </div>
+</section>
+
+<section class="stats-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-4 stat-item">
+                <div class="stat-number">${{ total_raised|floatformat:0 }}</div>
+                <div class="stat-label">Total Raised</div>
+            </div>
+            <div class="col-4 stat-item">
+                <div class="stat-number">{{ total_projects }}</div>
+                <div class="stat-label">Projects</div>
+            </div>
+            <div class="col-4 stat-item">
+                <div class="stat-number">{{ total_donors }}</div>
+                <div class="stat-label">Backers</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mt-5">
+    <h2 class="section-title">Featured Projects</h2>
+    {% if featured_projects %}
+        <div class="row g-4">
+            {% for project in featured_projects %}
+                <div class="col-md-4">
+                    <div class="project-card">
+                        {% if project.image %}
+                            <a href="{% url 'projects:detail' project.pk %}">
+                                <img src="{{ project.image.url }}" alt="{{ project.title }}" class="card-img-top" style="height:180px;object-fit:cover;">
+                            </a>
+                        {% endif %}
+                        <div class="card-body">
+                            <div class="d-flex gap-1 mb-2 flex-wrap">
+                                {% if project.category %}
+                                    <span class="badge badge-category">{{ project.category.name }}</span>
+                                {% endif %}
+                            </div>
+                            <h5 class="card-title"><a href="{% url 'projects:detail' project.pk %}">{{ project.title }}</a></h5>
+                            <p class="card-text">{{ project.details|truncatewords:25 }}</p>
+                            <div class="progress mb-2">
+                                <div class="progress-bar" style="width: {{ project.percent_raised }}%"></div>
+                            </div>
+                            <div class="project-meta">
+                                <span><strong class="pledge-info">${{ project.current_amount|floatformat:0 }}</strong> pledged</span>
+                                <span>${{ project.total_target|floatformat:0 }} goal</span>
+                            </div>
+                            <div class="project-meta mt-1">
+                                <span>by {{ project.owner.first_name }}</span>
+                                <span>{{ project.end_time|timeuntil }} left</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'projects:list' %}" class="btn btn-outline-primary btn-lg">View All Projects</a>
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <p class="text-muted">No projects yet. Be the first to <a href="{% url 'projects:create' %}">start one</a>!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

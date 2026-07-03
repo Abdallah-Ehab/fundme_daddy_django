@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Creators{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1 class="section-title">Creators</h1>
+        <p class="text-muted">Discover the people behind the projects.</p>
+    </div>
+</div>
+
+<div class="container">
+    {% if users %}
+        <div class="row g-4">
+            {% for creator in users %}
+                <div class="col-md-3">
+                    <a href="{% url 'user_detail' creator.pk %}" class="text-decoration-none">
+                        <div class="user-card">
+                            <div class="avatar">{{ creator.first_name|first|upper }}{{ creator.last_name|first|upper }}</div>
+                            <div class="user-name">{{ creator.first_name }} {{ creator.last_name }}</div>
+                            <p class="text-muted small mb-1">{{ creator.project_count }} project{{ creator.project_count|pluralize }}</p>
+                            <p class="pledge-info small">${{ creator.total_raised|floatformat:0 }} raised</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <p class="text-muted">No creators yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
